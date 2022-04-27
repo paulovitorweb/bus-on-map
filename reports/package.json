@@ -1,0 +1,28 @@
+{
+  "name": "reports",
+  "version": "0.1.1",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "jest",
+    "start": "node src/index.js"
+  },
+  "author": "Paulo Freitas <paulogeo5@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.18.0",
+    "express-async-errors": "^3.1.1",
+    "kafkajs": "^1.16.0",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "jest": "^28.0.0",
+    "standard": "^16.0.4"
+  }
+}

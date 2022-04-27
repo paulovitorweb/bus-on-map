@@ -3,19 +3,19 @@ const Clients = require('./clients')
 
 const clients = new Clients().getInstance()
 
-function handler(request, response, next) {
-    const sse = new SSE(response)
+function handler (request, response, next) {
+  const sse = new SSE(response)
 
-    sse.init()
+  sse.init()
 
-    const clientId = clients.addNewClient(sse)
+  const clientId = clients.addNewClient(sse)
 
-    request.on('close', () => {
-        console.log(`${clientId} Connection closed`)
-        clients.removeClient(clientId)
-    })
+  request.on('close', () => {
+    console.log(`${clientId} Connection closed`)
+    clients.removeClient(clientId)
+  })
 }
 
 module.exports = {
-    handler
+  handler
 }

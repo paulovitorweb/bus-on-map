@@ -19,5 +19,21 @@ KAFKA_POSITIONS_TOPIC=positions
 With kafka broker running, run the server:
 
 ```
-npm start
+make run
+```
+
+## Test
+
+This program uses Jest for unit tests. Run:
+
+```
+make test
+```
+
+## Lint
+
+This program uses Standard for check coding style. Run:
+
+```
+make lint
 ```

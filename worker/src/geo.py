@@ -2,6 +2,7 @@ import pyproj
 from shapely.geometry.point import Point
 from shapely.geometry.linestring import LineString
 from shapely.ops import transform
+from shapely import wkt
 
 
 def project_point(lat: float, lng: float) -> Point:
@@ -18,8 +19,13 @@ def project_point(lat: float, lng: float) -> Point:
     return utm_point
 
 
+def load_linestring(wktext: str) -> LineString:
+    """Returns the LineString shapely object from WKT"""
+    return wkt.loads(wktext)
+
+
 def get_point_to_line_distance(point: Point, line: LineString) -> float:
-    """Returns the distance from the point to the line, in meters. 
+    """Returns the distance from the point to the line, in meters.
     Assume the point and line are both in the same metric coordinate system.
     """
     return line.distance(point)

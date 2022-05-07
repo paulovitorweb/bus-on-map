@@ -2,12 +2,12 @@ from src.logger import Logger
 from src.config import Config
 from src.geo import project_point, get_point_to_line_distance
 from src.domain import Position
-from src.helpers.cache import get_route
+from src.helpers import cache
 
 
 def check_off_route(position: Position) -> bool:
     """Checks if the vehicle is off route"""
-    route = get_route(position.route_id)
+    route = cache.get_route(position.route_id)
     point = project_point(lat=position.lat, lng=position.lng)
     distance = get_point_to_line_distance(point, route)
 

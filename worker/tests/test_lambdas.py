@@ -1,9 +1,9 @@
 from unittest import TestCase
 from unittest.mock import MagicMock, patch
 from src.config import Config
-from src.repository import Repository
 from src.domain import Position
 from src.lambdas.check_off_route import check_off_route
+from src.helpers.cache import get_route
 
 
 module_path = check_off_route.__module__
@@ -18,7 +18,7 @@ class TestLambdaCheckOffRoute(TestCase):
         self.distance_mock = 100
 
         def exec():
-            with patch.object(Repository, 'get_route', return_value=self.route_mock) as get_route_mock, \
+            with patch(f'{module_path}.get_route', return_value=self.route_mock) as get_route_mock, \
                     patch(f'{module_path}.project_point', return_value=self.point_mock) as proj_point_mock, \
                     patch(f'{module_path}.get_point_to_line_distance', return_value=self.distance_mock) as point_to_line_mock:
 
@@ -48,3 +48,8 @@ class TestLambdaCheckOffRoute(TestCase):
         self.distance_mock = 40 # less than the max tolerated distance
         self.exec_fn()
         self.assertFalse(self.off_route)
+
+
+class TestLambdasUtils(TestCase):
+    def test__get_route_from_database_should_set_cache(self):
+        route = get_route(1)

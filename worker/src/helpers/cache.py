@@ -18,7 +18,6 @@ def get_route(route_id):
     cached_route = cache.get(route_cache_key)
 
     if cached_route:
-        print(cached_route)
         route = json.loads(cached_route)
         return Route(**route)
 

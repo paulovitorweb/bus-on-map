@@ -5,11 +5,11 @@ from src.logger import Logger
 
 
 class Repository:
-
+    """Read-only repository that abstracts read to PostgreSQL database"""
     def get_route(self, route_id: int) -> Route:
         query = (
             'SELECT id, code, name, ST_AsText(geom) geom '
-            'FROM core_routee '
+            'FROM core_route '
             'WHERE id = %s'
         )
         row = self._run_query_and_fetch_one(query, (route_id,))

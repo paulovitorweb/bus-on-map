@@ -14,6 +14,7 @@ class Config:
     POSTGRES_DB_USER = None
     POSTGRES_DB_PASS = None
     LAMBDA_MAX_DISTANCE_TOLERATED_OFF_ROUTE = None
+    CACHE_ROUTE_EXPIRATION_IN_SECONDS = None
 
 
 def load_config():
@@ -26,6 +27,8 @@ def load_config():
     Config.POSTGRES_DB_PASS = os.environ.get('POSTGRES_DB_PASS', 'postgres')
     Config.LAMBDA_MAX_DISTANCE_TOLERATED_OUT_OF_ROUTE =  \
         os.environ.get('LAMBDA_MAX_DISTANCE_TOLERATED_OFF_ROUTE', '50')
+    Config.CACHE_ROUTE_EXPIRATION_IN_SECONDS =  \
+        os.environ.get('CACHE_ROUTE_EXPIRATION_IN_SECONDS', str(60))
 
 
 load_config()

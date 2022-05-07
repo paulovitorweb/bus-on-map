@@ -5,7 +5,6 @@ from shapely.geometry.linestring import LineString
 from src.geo import load_linestring
 
 
-
 Wkt = NewType('Wkt', str)
 
 

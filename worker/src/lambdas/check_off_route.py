@@ -16,6 +16,7 @@ def check_off_route(position: Position) -> bool:
     if not is_off_route:
         return False
 
-    Logger().get_instance().warning(f'The bus {position.vehicle_id} is off route {route.id}')
+    logger = Logger().get_instance()
+    logger.warning(f'The bus {position.vehicle_id} is off route {route.id}')
 
     return True

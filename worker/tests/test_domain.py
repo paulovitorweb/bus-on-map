@@ -2,13 +2,12 @@ from unittest import TestCase
 from json.decoder import JSONDecodeError
 from dataclasses import FrozenInstanceError
 from shapely.geometry.linestring import LineString
-from src.domain import Position, Route
+from src.domain import Position, Route, Alert, AlertType
 
 
 class TestDomainPosition(TestCase):
     def setUp(self) -> None:
-        str_position ='{"lat": -7.118443, "lng": -34.879287, "vehicle_id": 1, "route_id": 10}'
-        self.position = Position.from_json(str_position)
+        self.position = Position(lat=-7.118443, lng=-34.879287, vehicle_id=1, route_id=10, correlation_key='uuid')
 
     def test__new_position_should_have_latitude(self):
         self.assertEqual(self.position.lat, -7.118443)
@@ -21,6 +20,9 @@ class TestDomainPosition(TestCase):
 
     def test__new_position_should_have_route_id(self):
         self.assertEqual(self.position.route_id, 10)
+
+    def test__new_position_should_have_correlation_key(self):
+        self.assertEqual(self.position.correlation_key, 'uuid')
 
     def test__new_position_instance_should_be_frozen(self):
         def change_position():
@@ -61,3 +63,25 @@ class TestDomainRoute(TestCase):
 
     def test__new_route_should_fail_due_to_missing_input_data(self):
         self.assertRaises(TypeError, lambda: Route(1, '204', 'CRISTO'))
+
+
+class TestDomainAlert(TestCase):
+    def setUp(self) -> None:
+        self.alert = Alert(type=AlertType.OFF_ROUTE.value, correlation_key='uuid', extra={'any': 'data'})
+
+    def test__new_alert_should_have_type(self):
+        self.assertEqual(self.alert.type, 'OFF_ROUTE')
+
+    def test__new_alert_should_have_correlation_key(self):
+        self.assertEqual(self.alert.correlation_key, 'uuid')
+
+    def test__new_alert_should_have_extra_data(self):
+        self.assertEqual(self.alert.extra, {'any': 'data'})
+
+    def test__new_alert_instance_should_be_frozen(self):
+        def change_alert():
+            self.alert.type = AlertType.BUNCHING.value
+        self.assertRaises(FrozenInstanceError, change_alert)
+
+    def test__new_alert_should_fail_due_to_missing_input_data(self):
+        self.assertRaises(TypeError, lambda: Alert())

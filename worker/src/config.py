@@ -6,8 +6,12 @@ load_dotenv()
 
 
 class Config:
+    APP_ID = None
+    POSITIONS_TOPIC = None
+    ALERTS_TOPIC = None
     REDIS_HOST = None
     REDIS_PORT = None
+    KAFKA_BROKER = None
     POSTGRES_DB_HOST = None
     POSTGRES_DB_PORT = None
     POSTGRES_DB_NAME = None
@@ -19,8 +23,12 @@ class Config:
 
 
 def load_config():
+    Config.APP_ID = os.environ.get('APP_ID', 'worker_app')
+    Config.POSITIONS_TOPIC = os.environ.get('POSITIONS_TOPIC', 'positions3')
+    Config.ALERTS_TOPIC = os.environ.get('ALERTS_TOPIC', 'alerts')
     Config.REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
     Config.REDIS_PORT = os.environ.get('REDIS_PORT', '6379')
+    Config.KAFKA_BROKER = os.environ.get('KAFKA_BROKER', 'localhost:29092')
     Config.POSTGRES_DB_HOST = os.environ.get('POSTGRES_DB_HOST', 'localhost')
     Config.POSTGRES_DB_PORT = os.environ.get('POSTGRES_DB_PORT', '5432')
     Config.POSTGRES_DB_NAME = os.environ.get('POSTGRES_DB_NAME', 'postgres')

@@ -1,11 +1,11 @@
 import faust
 from typing import List
-from src.lambdas.check_off_route import check_off_route
-from src.lambdas.check_bus_bunching import check_bus_bunching
-from src.lambdas.check_bus_exceeded_capacity import check_bus_exceeded_capacity
 from src.config import Config
 from src.domain import Position
 from src.stream import schemas
+from src.lambdas.check_off_route import check_off_route
+from src.lambdas.check_bus_bunching import check_bus_bunching
+from src.lambdas.check_bus_exceeded_capacity import check_bus_exceeded_capacity
 
 
 app = faust.App(

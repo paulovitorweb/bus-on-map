@@ -29,6 +29,7 @@ class Repository:
             if cursor is not None:
                 cursor.close()
             db.close()
+            PostgresDatabase._conn = None
 
         return result
         

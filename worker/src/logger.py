@@ -5,7 +5,7 @@ import logging
 def config_logger():
     _LOG_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
     logging.basicConfig(
-        level=logging.DEBUG,
+        level=logging.INFO,
         format=_LOG_FORMAT,
         handlers=[
             logging.FileHandler('log.log'),

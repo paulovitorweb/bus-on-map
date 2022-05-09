@@ -28,3 +28,11 @@ Execute os testes.
 ```
 make test
 ```
+
+## Stream de dados
+
+Para iniciar o stream de dados, com o ambiente virtual ativado, execute:
+
+```
+faust -A src.main worker -l info
+```

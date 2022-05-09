@@ -28,6 +28,6 @@ def get_route(route_id):
         ex=int(Config.CACHE_ROUTE_EXPIRATION_IN_SECONDS)
     )
 
-    Logger().get_instance().info(f'Cache set for route {route_id}')
+    Logger().get_instance().info(f'Cache set for route <{db_route}>')
 
     return db_route

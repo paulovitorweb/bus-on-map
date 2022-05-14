@@ -8,7 +8,7 @@ class TestApi(TestCase):
         self.client = TestClient(app)
     
     def test__api_should_receive_position(self):
-        payload = {'lat': -7.118443, 'lng': -34.879287, 'vehicle_id': 1, 'route_id': 10}
+        payload = {'lat': -7.118443, 'lng': -34.879287, 'vehicle_id': 1, 'route_id': 1}
         response = self.client.post('/positions/', json=payload)
         self.assertEqual(response.status_code, 200)
 

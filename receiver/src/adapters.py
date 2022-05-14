@@ -16,7 +16,7 @@ def init_stream():
 
 class Config:
     """Centralize kafka settings"""
-    POSITIONS_TOPIC = 'positions'
+    POSITIONS_TOPIC = 'positions3'
 
 
 def stream(position: Position):

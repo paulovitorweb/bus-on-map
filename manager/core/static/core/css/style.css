@@ -1,0 +1,57 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    display: grid;
+    height: 100vh;
+
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: 1fr;
+
+    font-family: 'Nunito', sans-serif;
+}
+
+#map {
+    height: 100vh
+}
+
+aside {
+    overflow: hidden;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+li, h2 {
+    display: block;
+    padding: 8px 16px;
+}
+
+li span {
+    display: inline-block;
+    padding: 2px 5px;
+    background-color: #bbb;
+    border-radius: 10%;
+}
+
+li small {
+    padding-right: 8px;
+}
+
+.fade-in {
+    animation: fadeIn ease 2s;
+}
+@keyframes fadeIn {
+    0% {
+        opacity:0;
+    }
+    100% {
+        opacity:1;
+    }
+}

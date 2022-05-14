@@ -91,3 +91,8 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+OSM_CONFIG = {
+    'TILE_LAYER': os.environ.get('MAP_TILER_URL', 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'),
+    'ATTRIBUTION': os.environ.get('MAP_TILER_ATTRIBUTION', '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>')
+}

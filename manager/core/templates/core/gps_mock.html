@@ -1,0 +1,115 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Simulator</title>
+    <link href="{% static 'core/css/bootstrap.css' %}" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">GPS Simulator</h2>
+        <div class="row mb-3">
+            <div class="col">
+              <label for="max-displacement" class="form-label">Deslocamento máximo (metros)</label>
+              <input type="number" class="form-control" placeholder="Deslocamento máximo (metros)" id="max-displacement" value="10">
+            </div>
+            <div class="col">
+              <label for="min-displacement" class="form-label">Deslocamento mínimo (metros)</label>
+              <input type="number" class="form-control" placeholder="Deslocamento mínimo (metros)" id="min-displacement" value="80">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-6">
+              <label for="interval" class="form-label">Intervalo de envio (milissegundos)</label>
+              <input type="number" class="form-control" placeholder="Intervalo de envio (milissegundos)" id="interval" value="4000">
+            </div>
+        </div>
+        <div class="d-grid gap-2 col-12 mx-auto">
+            <button class="btn btn-primary" type="button" onclick="start()">Iniciar</button>
+            <button class="btn btn-secondary" type="button" onclick="stop()">Parar</button>
+        </div>
+        <div class="row mt-5">
+            <div class="col fs-5" id="progress"></div>
+        </div>
+    </div>
+    <script src="{% static 'core/js/turf.js' %}"></script>
+    <script src="{% static 'core/js/bootstrap.js' %}"></script>
+    <script type="application/javascript">
+        var routes = {}
+        let control = true
+        let qtyPositions = 0
+        const divProgress = document.getElementById('progress')
+
+        const start = () => {
+            const interval = parseInt(document.getElementById('interval').value)
+            const minDisplacement = parseInt(document.getElementById('min-displacement').value)
+            const maxDisplacement = parseInt(document.getElementById('max-displacement').value)
+
+            fetch('http://localhost:8000/api/routes')
+                .then(response => response.json())
+                .then(data => addRoutesToCache(data))
+
+            const randomUntil = n => Math.floor(Math.random() * n)
+            const randomBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
+            const calculateDisplacement = fromMeters => randomBetween(minDisplacement, maxDisplacement) + fromMeters
+            const logResult = () => { divProgress.innerText = `${qtyPositions} posições enviadas` }
+
+            const postPosition = data => {
+                fetch('http://127.0.0.1:8086/positions/', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.text)
+                .then(() => {qtyPositions++; logResult()})
+            }
+
+            let lines = []
+
+            const addRoutesToCache = data => {
+                data.features.forEach(feat => {
+                    routes[feat.properties.pk] = feat.geometry
+                })
+                for (const line in routes) {
+                    lines.push({
+                        busId: randomBetween(1000, 9999),
+                        vector: routes[line],
+                        meters: 1
+                    })
+                }
+            }
+
+            (function sendPositions() {
+                lines.forEach(line => {
+                    const meters = calculateDisplacement(line.meters)
+                    line.meters = meters
+
+                    const displacementInVector = turf.along(line.vector, meters, {units: 'meters'})
+
+                    const [longitude, latitude] = turf.getCoords(displacementInVector)
+
+                    const data = {
+                        vehicle_id: line.busId,
+                        lat: latitude,
+                        lng: longitude,
+                        route_id: 1
+                    }
+
+                    postPosition(data)
+                })
+                if (control) {
+                    setTimeout(sendPositions, interval)
+                }
+            })()
+        }
+
+        const stop = () => {
+            control = false
+        }
+
+    </script>
+</body>
+</html>

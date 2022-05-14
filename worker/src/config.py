@@ -25,7 +25,7 @@ class Config:
 def load_config():
     Config.APP_ID = os.environ.get('APP_ID', 'worker_app')
     Config.POSITIONS_TOPIC = os.environ.get('POSITIONS_TOPIC', 'positions3')
-    Config.ALERTS_TOPIC = os.environ.get('ALERTS_TOPIC', 'alerts')
+    Config.ALERTS_TOPIC = os.environ.get('ALERTS_TOPIC', 'alerts3')
     Config.REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
     Config.REDIS_PORT = os.environ.get('REDIS_PORT', '6379')
     Config.KAFKA_BROKER = os.environ.get('KAFKA_BROKER', 'localhost:29092')

@@ -29,6 +29,8 @@ def check_off_route(position: Position) -> Optional[Alert]:
         type=AlertType.OFF_ROUTE.value,
         correlation_key=position.correlation_key,
         extra=dict(
+            bus=position.vehicle_id,
+            route=route.id,
             distance=distance
         )
     )

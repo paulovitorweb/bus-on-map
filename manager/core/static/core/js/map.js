@@ -2,6 +2,16 @@
 var routes = {}
 
 
+/* Cache de alertas */
+var alerts = {}
+
+
+/* Componentes */
+const listRoutes = document.getElementById('list-routes')
+const listToasts = document.getElementById('list-toasts')
+const listEvents = document.getElementById('list-events')
+
+
 /* Funções de inicialização */
 fetch('/api/routes')
     .then(response => response.json())
@@ -21,10 +31,10 @@ var setBaseMap = L.tileLayer(mapTileLayer, {
 /* Constantes */
 const ALERT_TYPE_MAP = {
     "OFF_ROUTE": ({ bus, route, distance }) => {
-        const { code, name } = routes[route]
+        const { code } = routes[route]
         return [
-            "Fora de rota", 
-            `O ônibus ${bus} da rota ${code} (${name}) está ${distance} metros fora da rota`
+            "FORA DE ROTA", 
+            `O ônibus ${bus} da rota ${code} está ${distance} metros fora da rota`
         ]
     }
 }
@@ -39,7 +49,13 @@ function addRoutesToCache(data) {
     data.features.forEach(feat => {
         routes[feat.properties.pk] = feat.properties
     })
-    console.log(routes)
+}
+
+function addRoutesToSidebar(data) {
+    const allRoutesOption = `<option value="0">Todas</option>`
+    listRoutes.innerHTML = allRoutesOption + data.features.map(({ properties: props }) => `
+        <option value="${props.id}">${props.code} - ${props.name}</option>
+    `).join('')
 }
 
 function onEachRoute(feature, layer) {
@@ -50,8 +66,41 @@ function onEachRoute(feature, layer) {
 }
 
 const loadRoutes = data => {
+    addRoutesToSidebar(data)
     addRoutesToMap(data)
     addRoutesToCache(data)
+}
+
+const showToastAlert = (label, description) => {
+    const newToast = document.createElement('div')
+    newToast.classList.add('toast', 'align-items-center', 'text-white', 'bg-danger', 'border-0')
+    newToast.innerHTML = `
+        <div class="d-flex">
+            <div class="toast-body">
+                <strong>${label}</strong>
+                <br>${description}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    `
+    listToasts.appendChild(newToast)
+
+    let newToastObj = new bootstrap.Toast(newToast)
+    newToastObj.show()
+}
+
+const addEventToSidebar = (label, description) => {
+    const newAlert = document.createElement('a')
+    newAlert.classList.add('list-group-item', 'list-group-item-action')
+    newAlert.setAttribute('href', '#')
+    newAlert.innerHTML = `
+        <div class="d-flex w-100 justify-content-between">
+            <p class="mb-1"><strong>${label}</strong></p>
+            <small>Há alguns segundos</small>
+        </div>
+        <small class="text-muted">${description}</small>
+    `
+    listEvents.appendChild(newAlert)
 }
 
 
@@ -84,13 +133,28 @@ const handlePositionEvent = event => {
 
 const handleAlertEvent = event => {
     const data = JSON.parse(event.data)
-    const { type, extra, correlation_key: corrKey } = data
+    const { type, extra } = data
 
     const [label, description] = ALERT_TYPE_MAP[type](extra)
 
-    console.log(label, description, corrKey)
+    const busId = extra['bus']
+
+    if (!alerts[busId]) {
+        showToastAlert(label, description)
+        addEventToSidebar(label, description)
+        alerts[busId] = true
+    }
 }
 
 sse.addEventListener('position', handlePositionEvent)
 
-sse.addEventListener('alert', handleAlertEvent)
+sse.addEventListener('alert', handleAlertEvent);
+
+
+/* Limpa o cache de alertas a cada 60 segundos */
+(function handleCache() {
+    for (const busId in alerts) {
+        alerts[busId] = false
+    }
+    setTimeout(handleCache, 60 * 1000)
+})()

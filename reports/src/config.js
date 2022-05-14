@@ -3,5 +3,6 @@ module.exports = {
   KAFKA_CLIENT_ID: process.env.KAFKA_CLIENT_ID,
   KAFKA_GROUP_ID: process.env.KAFKA_GROUP_ID,
   KAFKA_POSITIONS_TOPIC: process.env.KAFKA_POSITIONS_TOPIC,
+  KAFKA_ALERTS_TOPIC: process.env.KAFKA_ALERTS_TOPIC,
   API_PORT: process.env.API_PORT
 }

@@ -1,6 +1,7 @@
 class SSE {
   static eventType = {
-    POSITION: 'position'
+    POSITION: 'position',
+    ALERT: 'alert'
   }
 
   constructor(response) {
@@ -17,6 +18,7 @@ class SSE {
   }
 
   sendMessage(event, data) {
+    console.log(event, data)
     this._response.write(`event: ${event}\n`)
     this._response.write(`data: ${JSON.stringify(data)}\n\n`)
   }

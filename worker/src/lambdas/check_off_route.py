@@ -22,7 +22,8 @@ def check_off_route(position: Position) -> Optional[Alert]:
     logger = Logger().get_instance()
     logger.warning(
         f'The bus <{position.vehicle_id}> is off route <{route}> - '
-        f'Distance: {distance} meters'
+        f'Distance: {distance} meters - '
+        f'Correlation key: {position.correlation_key}'
     )
 
     return Alert(

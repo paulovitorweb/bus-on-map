@@ -39,7 +39,11 @@ A opção pelo Nodejs é pela facilidade de implementar SSE, com seu loop assín
 
 ### Manager
 
-Um sistema monolito escrito em Python usando [Django](https://www.djangoproject.com/) e o [GeoDjango](https://docs.djangoproject.com/en/4.0/ref/contrib/gis/) para fornecer recursos como criação e edição vetorial das rotas e qualquer outro dado geográfico necessário para o gerenciamento do sistema de transporte. Também é utilizado para fornecer uma API que retorna as rotas no formado GeoJSON para o mapa. No frontend é utilizado o bom Vanilla JS para se conectar à API de eventos do servidor Nodejs e receber as posições dos veículos e os alertas para exibição em mapa em tempo real (JS na web tem suporte nativo a SSE com a interface [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource), suportada por praticamente todos os navegadores). Cada nova posição resulta na movimentação do ícone dos ônibus no mapa e cada novo alerta gera uma mensagem de alerta usando toasts do Bootstrap 5. A interface de mapa é feita com [Leaflet](https://leafletjs.com/).
+Um sistema monolito escrito em Python usando [Django](https://www.djangoproject.com/) e o [GeoDjango](https://docs.djangoproject.com/en/4.0/ref/contrib/gis/) para fornecer recursos como criação e edição vetorial das rotas e qualquer outro dado geográfico necessário para o gerenciamento do sistema de transporte. 
+
+![Demonstration](docs/image/draw-route-demonstration.gif)
+
+Também é utilizado para fornecer uma API que retorna as rotas no formado GeoJSON para o mapa. No frontend é utilizado o bom Vanilla JS para se conectar à API de eventos do servidor Nodejs e receber as posições dos veículos e os alertas para exibição em mapa em tempo real (JS na web tem suporte nativo a SSE com a interface [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource), suportada por praticamente todos os navegadores). Cada nova posição resulta na movimentação do ícone dos ônibus no mapa e cada novo alerta gera uma mensagem de alerta usando toasts do Bootstrap 5. A interface de mapa é feita com [Leaflet](https://leafletjs.com/).
 
 ### Banco de dados
 
